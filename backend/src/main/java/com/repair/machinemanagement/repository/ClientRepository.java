@@ -1,0 +1,26 @@
+package com.repair.machinemanagement.repository;
+
+import com.repair.machinemanagement.entity.Client;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Repository
+public interface ClientRepository extends JpaRepository<Client, Long> {
+
+    List<Client> findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCase(String nom, String prenom);
+
+    Boolean existsByNumero(String numero);
+
+    // AJOUT POUR LES TESTS
+    Optional<Client> findByNumero(String numero);
+
+    Optional<Client> findByEmail(String email);
+
+    @Query("SELECT c FROM Client c WHERE c.nom LIKE %:keyword% OR c.prenom LIKE %:keyword%")
+    List<Client> searchClients(@Param("keyword") String keyword);
+}

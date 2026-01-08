@@ -1,0 +1,4 @@
+com\repair\machinemanagement\entity\MachineEntityTest.class
+com\repair\machinemanagement\entity\UserEntityTest.class
+com\repair\machinemanagement\service\UserServiceTest.class
+com\repair\machinemanagement\entity\ClientEntityTest.class
