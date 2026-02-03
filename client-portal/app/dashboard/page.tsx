@@ -206,7 +206,7 @@ export default function DashboardPage() {
                         {client?.prenom} {client?.nom}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {isAdmin(client) ? client?.email : client?.identifiant}
+                        {client?.email}
                       </p>
                       {isAdmin(client) && (
                         <Badge variant="secondary" className="w-fit mt-1 bg-primary/10 text-primary">

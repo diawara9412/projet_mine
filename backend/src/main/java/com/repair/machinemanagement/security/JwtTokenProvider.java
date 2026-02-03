@@ -45,17 +45,21 @@ public class JwtTokenProvider {
 
     /**
      * Génère un token JWT pour un client.
+     * Le subject est l'email du client (utilisé pour l'authentification)
      */
     public String generateClientToken(ClientDetailsImpl clientDetails) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
 
         return Jwts.builder()
-                .subject(clientDetails.getUsername())
+                .subject(clientDetails.getEmail()) // Utiliser l'email comme subject principal
                 .claim("id", clientDetails.getId())
                 .claim("role", "CLIENT")
                 .claim("type", "CLIENT")
                 .claim("email", clientDetails.getEmail())
+                .claim("identifiant", clientDetails.getIdentifiant())
+                .claim("nom", clientDetails.getNom())
+                .claim("prenom", clientDetails.getPrenom())
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(getSigningKey(), Jwts.SIG.HS512)
@@ -134,12 +138,14 @@ public class JwtTokenProvider {
         userInfo.put("role", claims.get("role"));
         userInfo.put("type", claims.get("type"));
         
-        // For CLIENT type, include email
+        // For CLIENT type, include all client info
         if ("CLIENT".equals(claims.get("type"))) {
             userInfo.put("email", claims.get("email"));
-            userInfo.put("identifiant", claims.getSubject());
+            userInfo.put("identifiant", claims.get("identifiant"));
+            userInfo.put("nom", claims.get("nom"));
+            userInfo.put("prenom", claims.get("prenom"));
         } else {
-            // For USER type, username is the subject
+            // For USER type, username is the subject (email)
             userInfo.put("email", claims.getSubject());
         }
         

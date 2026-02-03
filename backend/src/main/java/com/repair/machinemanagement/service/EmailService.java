@@ -43,10 +43,10 @@ public class EmailService {
             Context context = new Context();
             context.setVariable("clientNom", client.getNom());
             context.setVariable("clientPrenom", client.getPrenom());
-            context.setVariable("identifiant", client.getIdentifiant());
+            context.setVariable("email", client.getEmail()); // Email pour la connexion
             context.setVariable("password", plainPassword);
             context.setVariable("appName", appName);
-            context.setVariable("loginUrl", frontendUrl + "/client/login");
+            context.setVariable("loginUrl", frontendUrl);
 
             String htmlContent = templateEngine.process("client-credentials", context);
 
@@ -81,7 +81,7 @@ public class EmailService {
             context.setVariable("machineModele", machine.getModele());
             context.setVariable("statut", getStatutLabel(machine.getStatut()));
             context.setVariable("appName", appName);
-            context.setVariable("trackingUrl", frontendUrl + "/client/machines");
+            context.setVariable("trackingUrl", frontendUrl + "/dashboard");
 
             String htmlContent = templateEngine.process("machine-status-update", context);
 

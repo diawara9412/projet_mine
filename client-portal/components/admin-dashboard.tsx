@@ -21,7 +21,6 @@ import {
 
 interface Client {
   id: number
-  identifiant: string
   nom: string
   prenom: string
   email: string
@@ -69,7 +68,7 @@ export default function AdminDashboard() {
       c.nom?.toLowerCase().includes(query) ||
       c.prenom?.toLowerCase().includes(query) ||
       c.email?.toLowerCase().includes(query) ||
-      c.identifiant?.toLowerCase().includes(query)
+      c.numero?.toLowerCase().includes(query)
     )
   })
 
@@ -212,8 +211,8 @@ export default function AdminDashboard() {
                       )}
                     </div>
                     <div className="flex items-center gap-4 mt-1">
-                      <p className="text-sm text-muted-foreground">{client.identifiant}</p>
                       <p className="text-sm text-muted-foreground">{client.email}</p>
+                      <p className="text-sm text-muted-foreground">{client.numero}</p>
                     </div>
                   </div>
                   <div className="text-right">

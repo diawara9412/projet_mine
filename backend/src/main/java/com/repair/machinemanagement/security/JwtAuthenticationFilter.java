@@ -55,7 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UserDetails userDetails;
 
             if ("CLIENT".equals(type)) {
-                Client client = clientRepository.findByEmail(username)
+                // Le username dans le token est l'identifiant du client (ex: CLT-00001) ou l'email
+                Client client = clientRepository.findByEmailOrIdentifiant(username, username)
                         .orElseThrow(() ->
                                 new ResourceNotFoundException("Client introuvable")
                         );

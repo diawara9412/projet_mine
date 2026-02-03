@@ -6,7 +6,6 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
 
 interface Client {
   id: number
-  identifiant: string
   nom: string
   prenom: string
   email: string
@@ -26,7 +25,7 @@ export function isClient(client: Client | null): boolean {
 interface AuthContextType {
   client: Client | null
   isLoading: boolean
-  login: (identifiant: string, password: string) => Promise<void>
+  login: (email: string, password: string) => Promise<void>
   logout: () => void
   isAuthenticated: boolean
   refreshAuth: () => Promise<void>
@@ -51,7 +50,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (data.authenticated) {
           setClient({
             id: data.id,
-            identifiant: data.identifiant || data.email,
             nom: data.nom || "",
             prenom: data.prenom || "",
             email: data.email || "",
@@ -75,25 +73,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth()
   }, [])
 
-  const login = async (identifiant: string, password: string) => {
+  const login = async (email: string, password: string) => {
     const response = await fetch(`${API_URL}/api/auth/client/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include", // Important: receive cookies
-      body: JSON.stringify({ identifiant, password }),
+      body: JSON.stringify({ identifiant: email, password }), // Le backend attend 'identifiant' qui peut etre email
     })
 
     if (!response.ok) {
       const error = await response.json()
-      throw new Error(error.error || "Identifiant ou mot de passe incorrect")
+      throw new Error(error.error || "Email ou mot de passe incorrect")
     }
 
     const data = await response.json()
     setClient({
       id: data.id,
-      identifiant: data.identifiant,
       nom: data.nom,
       prenom: data.prenom,
       email: data.email,

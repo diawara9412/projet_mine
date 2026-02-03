@@ -55,7 +55,8 @@ public class ClientDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return identifiant;
+        // Utiliser l'email comme identifiant principal pour l'authentification
+        return email != null ? email : identifiant;
     }
 
     @Override

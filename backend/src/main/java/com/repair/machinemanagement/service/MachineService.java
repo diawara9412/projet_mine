@@ -139,16 +139,18 @@ public class MachineService {
 
         Machine updatedMachine = machineRepository.save(machine);
 
-        // ✅ Si le statut a changé, envoi un email
+        // ✅ Si le statut a changé et que le client a un email, envoi une notification
         if (request.getStatut() != null && request.getStatut() != ancienStatut) {
-            try {
-                emailService.sendMachineStatusUpdate(updatedMachine.getClient(), updatedMachine);
-            } catch (Exception e) {
-                // On lance une exception personnalisée pour signaler l'échec de l'envoi
-                throw new EmailSendException(
-                        "Échec de l'envoi de l'email de mise à jour du statut pour le client "
-                                + updatedMachine.getClient().getEmail(), e
-                );
+            String clientEmail = updatedMachine.getClient().getEmail();
+            if (clientEmail != null && !clientEmail.isBlank()) {
+                try {
+                    emailService.sendMachineStatusUpdate(updatedMachine.getClient(), updatedMachine);
+                } catch (Exception e) {
+                    // Log l'erreur mais ne bloque pas la mise à jour de la machine
+                    // L'email est envoyé de manière asynchrone, donc on log simplement l'erreur
+                    System.err.println("Échec de l'envoi de l'email de mise à jour du statut pour le client "
+                            + clientEmail + ": " + e.getMessage());
+                }
             }
         }
 

@@ -13,7 +13,7 @@ import { Loader2, Wrench, Shield, Clock, Eye, EyeOff } from "lucide-react"
 import { useAuth, AuthProvider } from "@/lib/auth-context"
 
 function LoginForm() {
-  const [identifiant, setIdentifiant] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
@@ -33,7 +33,7 @@ function LoginForm() {
     setIsSubmitting(true)
 
     try {
-      await login(identifiant, password)
+      await login(email, password)
       router.push("/dashboard")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur de connexion")
@@ -89,15 +89,15 @@ function LoginForm() {
                 )}
 
                 <div className="space-y-2">
-                  <Label htmlFor="identifiant" className="text-foreground">
-                    Identifiant ou Email
+                  <Label htmlFor="email" className="text-foreground">
+                    Email
                   </Label>
                   <Input
-                    id="identifiant"
-                    type="text"
-                    placeholder="CLT-00001 ou votre@email.com"
-                    value={identifiant}
-                    onChange={(e) => setIdentifiant(e.target.value)}
+                    id="email"
+                    type="email"
+                    placeholder="votre@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                     className="bg-input border-border focus:border-primary focus:ring-primary text-foreground placeholder:text-muted-foreground"
                   />
@@ -145,7 +145,7 @@ function LoginForm() {
 
               <div className="mt-6 pt-6 border-t border-border/50">
                 <p className="text-sm text-muted-foreground text-center">
-                  Vos identifiants vous ont ete envoyes par email lors de votre inscription.
+                  Vos identifiants de connexion vous ont ete envoyes par email lors de la creation de votre compte.
                 </p>
               </div>
             </CardContent>

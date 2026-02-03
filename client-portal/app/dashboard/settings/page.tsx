@@ -19,7 +19,6 @@ import {
   Key,
   User,
   Mail,
-  Hash,
   Eye,
   EyeOff,
   CheckCircle2,
@@ -57,8 +56,8 @@ export default function SettingsPage() {
       return
     }
 
-    if (newPassword.length < 6) {
-      setError("Le nouveau mot de passe doit contenir au moins 6 caracteres")
+    if (newPassword.length < 8) {
+      setError("Le nouveau mot de passe doit contenir au moins 8 caracteres")
       return
     }
 
@@ -132,7 +131,6 @@ export default function SettingsPage() {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <InfoItem icon={<User className="h-4 w-4" />} label="Nom complet" value={`${client?.prenom} ${client?.nom}`} />
-              <InfoItem icon={<Hash className="h-4 w-4" />} label="Identifiant" value={client?.identifiant || client?.email || "-"} />
               <InfoItem icon={<Mail className="h-4 w-4" />} label="Email" value={client?.email || "-"} />
               <InfoItem 
                 icon={<Shield className="h-4 w-4" />} 
@@ -203,11 +201,11 @@ export default function SettingsPage() {
                   <Input
                     id="newPassword"
                     type={showNewPassword ? "text" : "password"}
-                    placeholder="Minimum 6 caracteres"
+                    placeholder="Minimum 8 caracteres"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
-                    minLength={6}
+                    minLength={8}
                     className="bg-input border-border focus:border-primary focus:ring-primary pr-10 text-foreground placeholder:text-muted-foreground"
                   />
                   <button
@@ -232,7 +230,7 @@ export default function SettingsPage() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     required
-                    minLength={6}
+                    minLength={8}
                     className="bg-input border-border focus:border-primary focus:ring-primary pr-10 text-foreground placeholder:text-muted-foreground"
                   />
                   <button
@@ -266,13 +264,13 @@ export default function SettingsPage() {
                   </div>
                   <p className="text-xs text-muted-foreground">
                     Force du mot de passe:{" "}
-                    {newPassword.length >= 12
+                    {newPassword.length >= 16
                       ? "Fort"
+                      : newPassword.length >= 12
+                      ? "Bon"
                       : newPassword.length >= 8
-                      ? "Moyen"
-                      : newPassword.length >= 6
-                      ? "Faible"
-                      : "Tres faible"}
+                      ? "Acceptable"
+                      : "Trop court"}
                   </p>
                 </div>
               )}
